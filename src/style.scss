@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tile {
+  @apply transition-all z-20 absolute top-0 left-0 w-24 h-24 flex items-center justify-center text-[#776e65] duration-100 rounded-md;
+  
+  & .inner-tile {
+    @apply w-24 h-24 flex items-center justify-center text-3xl font-bold rounded-md;
+  }
+
+  @for $x from 0 through 3 {
+    @for $y from 0 through 3 {
+      &.tile-pos-#{$x}-#{$y} {
+        transform: translate($x * 7rem + 0.5rem, $y * 7rem + 0.5rem) scale(1);
+
+        &.new-tile {
+          & > .inner-tile {
+            transform: scale(0);
+            animation: new-tile-appear 0.4s ease-in-out forwards;
+          }
+
+          &.generated-tile > .inner-tile {
+            transform: scale(0);
+            animation: new-tile-appear 0.2s 0.2s ease-in-out forwards;
+          }
+        }
+
+        &.tile-remove {
+          @apply z-0;
+          transform: translate($x * 6rem, 24rem)
+        }
+      }
+    }
+  }
+}
+
+@keyframes new-tile-appear {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

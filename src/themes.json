@@ -1,0 +1,107 @@
+{
+  "original": {
+    "board": [
+      "#eee4da",
+      "#ede0c8",
+      "#f2b179",
+      "#f59563",
+      "#f67c5f",
+      "#f65e3b",
+      "#edcf72",
+      "#edcc61",
+      "#edc850",
+      "#edc53f",
+      "#edc22e"
+    ],
+    "bg": "#faf8ef",
+    "fg": "#776e65",
+    "fg_light": "#776e65",
+    "fg_dark": "#f9f6f2",
+    "color1": "#bbada0",
+    "color2": "#cdc1b4"
+  },
+  "tailwind dark": {
+    "board": [
+      "#F43F5E",
+      "#F97316",
+      "#F59E0B",
+      "#84CC16",
+      "#22C55E",
+      "#10B981",
+      "#0EA5E9",
+      "#6366F1",
+      "#A855F7",
+      "#D946EF",
+      "#EC4899"
+    ],
+    "bg": "#1E293B",
+    "fg": "#F9F9F9",
+    "fg_light": "#F9F9F9",
+    "fg_dark": "#0F0F0F",
+    "color1": "#0F172A",
+    "color2": "#1E293B"
+  },
+  "black & white": {
+    "board": [
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9",
+      "#f9f9f9"
+    ],
+    "bg": "#1e1e1e",
+    "fg": "#f9f9f9",
+    "fg_light": "#0f0f0f",
+    "fg_dark": "#F9F9F9",
+    "color1": "#0f0f0f",
+    "color2": "#1e1e1e"
+  },
+  "white & black": {
+    "board": [
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f",
+      "#0f0f0f"
+    ],
+    "bg": "#f9f9f9",
+    "fg": "#1e1e1e",
+    "fg_light": "#0f0f0f",
+    "fg_dark": "#f9f9f9",
+    "color1": "#e0e0e0",
+    "color2": "#f9f9f9"
+  },
+  "cyberpunk": {
+    "board": [
+	    "#00b8ff",
+	    "#001eff",
+	    "#bd00ff",
+	    "#d600ff",
+      "#8386f5",
+      "#3d43b4",
+      "#defe47",
+      "#ff6e27",
+      "#1afe49",
+      "#f887ff",
+      "#de004e"
+    ],
+    "bg": "#000000",
+    "fg": "#ffffff",
+    "fg_light": "#ffffff",
+    "fg_dark": "#ffffff",
+    "color1": "#111111",
+    "color2": "#000000"
+  }
+}

@@ -99,7 +99,7 @@
     ],
     "bg": "#000000",
     "fg": "#ffffff",
-    "fg_light": "#ffffff",
+    "fg_light": "#000000",
     "fg_dark": "#ffffff",
     "color1": "#111111",
     "color2": "#000000"

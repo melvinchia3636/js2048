@@ -1,3 +1,6 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable operator-linebreak */
+/* eslint-disable indent */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-loop-func */
@@ -5,21 +8,21 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-restricted-syntax */
 
-import "./style.scss";
-import { v4 } from "uuid";
-import anime from "animejs";
-import themes from "./themes.json";
-import "../lib/swipe-events.min";
+import './style.scss';
+import { v4 } from 'uuid';
+import anime from 'animejs';
+import themes from './themes.json';
+import '../lib/swipe-events.min';
 
 type Theme =
-  | "original"
-  | "tailwind dark"
-  | "black & white"
-  | "white & black"
-  | "cyberpunk";
+  | 'original'
+  | 'tailwind dark'
+  | 'black & white'
+  | 'white & black'
+  | 'cyberpunk';
 
 let selectedTheme: Theme =
-  (localStorage.getItem("theme") as Theme) ?? "original";
+  (localStorage.getItem('theme') as Theme) ?? 'original';
 let bestScore = 0;
 let score = 0;
 interface Tile {
@@ -37,24 +40,24 @@ interface Tile {
 
 let colorPalette: string[] = themes[selectedTheme].board;
 
-let board: Tile[] = JSON.parse(localStorage.getItem("board") || "[]");
+let board: Tile[] = JSON.parse(localStorage.getItem('board') || '[]');
 
-function isLeftRight(direction: "left" | "right" | "up" | "down"): number {
-  return Number(direction === "left" || direction === "right");
+function isLeftRight(direction: 'left' | 'right' | 'up' | 'down'): number {
+  return Number(direction === 'left' || direction === 'right');
 }
 
-function getYX(direction: "left" | "right" | "up" | "down"): "x" | "y" {
-  return ["y", "x"][isLeftRight(direction)] as "x" | "y";
+function getYX(direction: 'left' | 'right' | 'up' | 'down'): 'x' | 'y' {
+  return ['y', 'x'][isLeftRight(direction)] as 'x' | 'y';
 }
 
-function getXY(direction: "left" | "right" | "up" | "down"): "x" | "y" {
-  return ["x", "y"][isLeftRight(direction)] as "x" | "y";
+function getXY(direction: 'left' | 'right' | 'up' | 'down'): 'x' | 'y' {
+  return ['x', 'y'][isLeftRight(direction)] as 'x' | 'y';
 }
 
 function isDark(hex: string): boolean {
   const rgb = hex
     .toLowerCase()
-    .replace("#", "")
+    .replace('#', '')
     .match(/.{2}/g)
     ?.map((x) => parseInt(x, 16));
   if (rgb) return rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114 > 196;
@@ -65,11 +68,11 @@ function changeTheme(theme: Theme) {
   selectedTheme = theme;
   colorPalette = themes[theme].board;
 
-  localStorage.setItem("theme", theme);
+  localStorage.setItem('theme', theme);
 
-  const app = document.querySelector<HTMLDivElement>("#app")!;
+  const app = document.querySelector<HTMLDivElement>('#app')!;
   app.style.backgroundColor = themes[selectedTheme].bg;
-  document.body.querySelector("style")!.innerHTML = `
+  document.body.querySelector('style')!.innerHTML = `
     *, .btn {
       color: ${themes[selectedTheme].fg};
     }
@@ -82,10 +85,10 @@ function changeTheme(theme: Theme) {
   `;
 
   document.querySelector<HTMLDivElement>(
-    ".board-container"
+    '.board-container',
   )!.style.backgroundColor = themes[selectedTheme].color1;
   document
-    .querySelectorAll<HTMLDivElement>(".board-grid")
+    .querySelectorAll<HTMLDivElement>('.board-grid')
     .forEach((grid: HTMLDivElement) => {
       grid.style.backgroundColor = themes[selectedTheme].color2;
     });
@@ -93,9 +96,9 @@ function changeTheme(theme: Theme) {
   board.forEach((tile) => {
     document
       .getElementById(tile.id)!
-      .querySelector(".inner-tile")!
+      .querySelector('.inner-tile')!
       .setAttribute(
-        "style",
+        'style',
         `
       background-color: ${colorPalette[Math.log2(tile.value) - 1]};
       color: ${
@@ -103,79 +106,79 @@ function changeTheme(theme: Theme) {
           ? themes[selectedTheme].fg_light
           : themes[selectedTheme].fg_dark
       };
-    `
+    `,
       );
   });
 
   document
-    .querySelector<HTMLButtonElement>(".selected")!
-    .classList.remove("selected");
-  document.getElementById(`theme-${theme}`)!.classList.add("selected");
+    .querySelector<HTMLButtonElement>('.selected')!
+    .classList.remove('selected');
+  document.getElementById(`theme-${theme}`)!.classList.add('selected');
 
   Array(4)
     .fill(0)
     .forEach((_, i) => {
       document
         .getElementById(`rect-${i + 1}`)!
-        .setAttribute("fill", themes[selectedTheme].board[i]);
+        .setAttribute('fill', themes[selectedTheme].board[i]);
       document
         .getElementById(`box-text-${i}`)!
         .setAttribute(
-          "fill",
+          'fill',
           isDark(themes[selectedTheme].board[i])
             ? themes[selectedTheme].fg_light
-            : themes[selectedTheme].fg_dark
+            : themes[selectedTheme].fg_dark,
         );
     });
 
-  document.getElementById("newgame")!.setAttribute(
-    "style",
+  document.getElementById('newgame')!.setAttribute(
+    'style',
     `
     background-color: ${themes[selectedTheme].fg};
     color: ${themes[selectedTheme].bg};
-  `
+  `,
   );
 }
 
 function addScore(newScore: number) {
   anime({
-    targets: "#score",
+    targets: '#score',
     innerHTML: [score, score + newScore],
     round: 1,
-    easing: "easeInOutExpo",
+    easing: 'easeInOutExpo',
   });
   score += newScore;
   if (score > bestScore) {
     anime({
-      targets: "#best-score",
+      targets: '#best-score',
       innerHTML: [bestScore, score],
       round: 1,
-      easing: "easeInOutExpo",
+      easing: 'easeInOutExpo',
     });
     bestScore = score;
-    localStorage.setItem("bestScore", JSON.stringify(bestScore));
+    localStorage.setItem('bestScore', JSON.stringify(bestScore));
   }
-  localStorage.setItem("score", JSON.stringify(score));
+  localStorage.setItem('score', JSON.stringify(score));
 }
 
 function newGame() {
   anime({
-    targets: "#score",
+    targets: '#score',
     innerHTML: [score, 0],
     round: 1,
-    easing: "easeInOutExpo",
+    easing: 'easeInOutExpo',
   });
 
   score = 0;
   board = [];
 
-  document.querySelectorAll(".tile").forEach((e) => e.remove());
+  document.querySelectorAll('.tile').forEach((e) => e.remove());
 
   generateNewTile(2);
   generateNewTile(2);
 
-  localStorage.setItem("score", JSON.stringify(score));
-  localStorage.setItem("board", JSON.stringify(board));
+  localStorage.setItem('score', JSON.stringify(score));
+  localStorage.setItem('board', JSON.stringify(board));
 }
 
 // @ts-ignore
@@ -184,9 +187,9 @@ window.changeTheme = changeTheme;
 window.newGame = newGame;
 
 function initBoard() {
-  const app = document.querySelector<HTMLDivElement>("#app")!;
+  const app = document.querySelector<HTMLDivElement>('#app')!;
   app.style.backgroundColor = themes[selectedTheme].bg;
-  const style = document.createElement("style");
+  const style = document.createElement('style');
   style.innerHTML = `
     *, .btn {
       color: ${themes[selectedTheme].fg};
@@ -250,7 +253,7 @@ function initBoard() {
               .map(
                 ([name, theme]) => `
               <button onclick="changeTheme('${name}')" id="theme-${name}" class="rounded-lg !flex flex-row items-center justify-between p-4 ${
-                  name === selectedTheme && "selected"
+                  name === selectedTheme && 'selected'
                 }" style="
                 background-color: ${theme.bg};
                 outline-color: ${`${theme.fg}60`};
@@ -265,14 +268,14 @@ function initBoard() {
                     <span class="w-2 h-6 rounded-full" style="
                       background-color: ${e};
                     "></span>
-                  `
+                  `,
                     )
-                    .join("")}
+                    .join('')}
                 </div>
               </button>
-            `
+            `,
               )
-              .join("")}
+              .join('')}
           </div>
         </div>
         <a href="https://github.com/melvinchia3636/js2048" target="_blank" class="btn capitalize bg-transparent border-none">
@@ -305,9 +308,9 @@ function initBoard() {
           .fill(0)
           .map(
             () =>
-              `<div class="w-[4.4rem] sm:w-24 h-[4.4rem] sm:h-24 board-grid rounded-md m-1 sm:m-2 border-yellow-400" style="background-color: ${themes[selectedTheme].color2}"></div>`
+              `<div class="w-[4.4rem] sm:w-24 h-[4.4rem] sm:h-24 board-grid rounded-md m-1 sm:m-2 border-yellow-400" style="background-color: ${themes[selectedTheme].color2}"></div>`,
           )
-          .join("")}
+          .join('')}
       </div>
     </div>
     </div>
@@ -318,37 +321,37 @@ function initBoard() {
     </p>
   `;
 
-  if (localStorage.getItem("score")) {
-    score = Number(localStorage.getItem("score"));
+  if (localStorage.getItem('score')) {
+    score = Number(localStorage.getItem('score'));
     anime({
-      targets: "#score",
+      targets: '#score',
       innerHTML: [0, score],
       round: 1,
-      easing: "easeInOutExpo",
+      easing: 'easeInOutExpo',
     });
   }
 
-  if (localStorage.getItem("bestScore")) {
-    bestScore = Number(localStorage.getItem("bestScore"));
+  if (localStorage.getItem('bestScore')) {
+    bestScore = Number(localStorage.getItem('bestScore'));
     anime({
-      targets: "#best-score",
+      targets: '#best-score',
       innerHTML: [0, bestScore],
       round: 1,
-      easing: "easeInOutExpo",
+      easing: 'easeInOutExpo',
     });
   }
 
-  const boardElement = document.getElementById("board")!;
+  const boardElement = document.getElementById('board')!;
   return boardElement;
 }
 
-function sortBoard(direction: "up" | "down" | "left" | "right"): Tile[] {
-  if (direction === "up" || direction === "down") {
+function sortBoard(direction: 'up' | 'down' | 'left' | 'right'): Tile[] {
+  if (direction === 'up' || direction === 'down') {
     board.sort((a, b) => {
       if (a.position.y === b.position.y) {
         return b.position.x - a.position.x;
       }
-      return direction === "down"
+      return direction === 'down'
         ? b.position.y - a.position.y
         : a.position.y - b.position.y;
     });
@@ -357,7 +360,7 @@ function sortBoard(direction: "up" | "down" | "left" | "right"): Tile[] {
       if (a.position.x === b.position.x) {
         return b.position.y - a.position.y;
       }
-      return direction === "right"
+      return direction === 'right'
         ? b.position.x - a.position.x
         : a.position.x - b.position.x;
     });
@@ -367,12 +370,12 @@ function sortBoard(direction: "up" | "down" | "left" | "right"): Tile[] {
 }
 
 function createNewTile(tile: Tile, isGenerated: boolean): HTMLDivElement {
-  const newTileElement = document.createElement("div");
+  const newTileElement = document.createElement('div');
   newTileElement.id = tile.id;
   newTileElement.classList.add(
-    "tile",
-    isGenerated ? "generated-tile" : "new-tile",
-    `tile-pos-${tile.position.x}-${tile.position.y}`
+    'tile',
+    isGenerated ? 'generated-tile' : 'new-tile',
+    `tile-pos-${tile.position.x}-${tile.position.y}`,
   );
   newTileElement.innerHTML = `<div class="inner-tile text-slate-100" style="
     background-color: ${colorPalette[Math.log2(tile.value) - 1]};
@@ -387,41 +390,41 @@ function createNewTile(tile: Tile, isGenerated: boolean): HTMLDivElement {
   return newTileElement;
 }
 
-function compress(direction: "up" | "down" | "left" | "right"): void {
+function compress(direction: 'up' | 'down' | 'left' | 'right'): void {
   sortBoard(direction);
 
   for (const tile of board) {
     if (
       tile.position[getYX(direction)] !==
-      (["left", "up"].includes(direction) ? 0 : 3)
+      (['left', 'up'].includes(direction) ? 0 : 3)
     ) {
-      let i = ["left", "up"].includes(direction) ? 0 : 3;
+      let i = ['left', 'up'].includes(direction) ? 0 : 3;
       let found = false;
       while (
-        ["left", "up"].includes(direction)
+        ['left', 'up'].includes(direction)
           ? i <= tile.position[getYX(direction)] + 1
           : i >= tile.position[getYX(direction)] - 1
       ) {
         if (
           board.findIndex(
             (t) =>
-              t.position[["x", "y"][isLeftRight(direction)] as "x" | "y"] ===
+              t.position[['x', 'y'][isLeftRight(direction)] as 'x' | 'y'] ===
                 tile.position[
-                  ["x", "y"][isLeftRight(direction)] as "x" | "y"
+                  ['x', 'y'][isLeftRight(direction)] as 'x' | 'y'
                 ] &&
               t.position[getYX(direction)] === i &&
-              !t.toBeRemoved
+              !t.toBeRemoved,
           ) === -1
         ) {
           found = true;
           break;
         }
-        i += ["left", "up"].includes(direction) ? 1 : -1;
+        i += ['left', 'up'].includes(direction) ? 1 : -1;
       }
 
       if (
         found &&
-        (["left", "up"].includes(direction)
+        (['left', 'up'].includes(direction)
           ? i < tile.position[getYX(direction)]
           : i > tile.position[getYX(direction)])
       ) {
@@ -432,20 +435,20 @@ function compress(direction: "up" | "down" | "left" | "right"): void {
           .getElementById(tile.id)
           ?.classList.add(
             `tile-pos-${
-              ["left", "right"].includes(direction) ? i : tile.position.x
-            }-${["left", "right"].includes(direction) ? tile.position.y : i}`
+              ['left', 'right'].includes(direction) ? i : tile.position.x
+            }-${['left', 'right'].includes(direction) ? tile.position.y : i}`,
           );
         tile.position[getYX(direction)] = i;
 
         for (const t of tile.mergeCells) {
           const tl = document.getElementById(t);
           tl?.classList.remove(
-            `tile-pos-${tile.position.x}-${tile.position.y}`
+            `tile-pos-${tile.position.x}-${tile.position.y}`,
           );
           tl?.classList.add(
             `tile-pos-${
-              ["left", "right"].includes(direction) ? i : tile.position.x
-            }-${["left", "right"].includes(direction) ? tile.position.y : i}`
+              ['left', 'right'].includes(direction) ? i : tile.position.x
+            }-${['left', 'right'].includes(direction) ? tile.position.y : i}`,
           );
         }
       }
@@ -453,13 +456,13 @@ function compress(direction: "up" | "down" | "left" | "right"): void {
   }
 }
 
-function merge(direction: "up" | "down" | "left" | "right"): void {
+function merge(direction: 'up' | 'down' | 'left' | 'right'): void {
   sortBoard(direction).forEach((e) => {
     e.isMerged = false;
   });
   for (const tile of board) {
     if (
-      (["left", "up"].includes(direction)
+      (['left', 'up'].includes(direction)
         ? tile.position[getYX(direction)] < 3
         : tile.position[getYX(direction)] > 0) &&
       !tile.isMerged
@@ -469,8 +472,8 @@ function merge(direction: "up" | "down" | "left" | "right"): void {
           t.position[getXY(direction)] === tile.position[getXY(direction)] &&
           t.position[getYX(direction)] ===
             tile.position[getYX(direction)] -
-              (["left", "up"].includes(direction) ? -1 : 1) &&
-          t.value === tile.value
+              (['left', 'up'].includes(direction) ? -1 : 1) &&
+          t.value === tile.value,
       );
       if (targetIndex !== -1) {
         const target = board[targetIndex];
@@ -480,22 +483,22 @@ function merge(direction: "up" | "down" | "left" | "right"): void {
         const targetDiv = document.getElementById(target.id);
 
         targetDiv?.classList.remove(
-          `tile-pos-${target.position.x}-${target.position.y}`
+          `tile-pos-${target.position.x}-${target.position.y}`,
         );
         targetDiv?.classList.add(
           `tile-pos-${
             target.position.x +
-            (["left", "right"].includes(direction)
-              ? [1, -1][Number(direction === "left")]
+            (['left', 'right'].includes(direction)
+              ? [1, -1][Number(direction === 'left')]
               : 0)
           }-${
             target.position.y +
-            (["up", "down"].includes(direction)
-              ? [1, -1][Number(direction === "up")]
+            (['up', 'down'].includes(direction)
+              ? [1, -1][Number(direction === 'up')]
               : 0)
-          }`
+          }`,
         );
-        target.position[getYX(direction)] += ["left", "up"].includes(direction)
+        target.position[getYX(direction)] += ['left', 'up'].includes(direction)
           ? -1
           : 1;
 
@@ -530,8 +533,8 @@ function merge(direction: "up" | "down" | "left" | "right"): void {
         (tile) =>
           tile.isNew &&
           tile.position.x === t.position.x &&
-          tile.position.y === t.position.y
-      ).length
+          tile.position.y === t.position.y,
+      ).length,
   );
   for (const tile of toBeRemoved) {
     tile.toBeRemoved = true;
@@ -548,8 +551,8 @@ function generateNewTile(value?: number): void {
     .filter(
       ({ x, y }) =>
         board.findIndex(
-          (t) => t.position.x === x && t.position.y === y && !t.toBeRemoved
-        ) === -1
+          (t) => t.position.x === x && t.position.y === y && !t.toBeRemoved,
+        ) === -1,
     );
 
   if (emptyTiles.length) {
@@ -575,11 +578,11 @@ function generateNewTile(value?: number): void {
   }
 }
 
-const move = (direction: "left" | "right" | "up" | "down") => {
+const move = (direction: 'left' | 'right' | 'up' | 'down') => {
   board
     .filter((e) => e.isNew)
     .forEach((e) => {
-      document.getElementById(e.id)?.classList.remove("new-tile");
+      document.getElementById(e.id)?.classList.remove('new-tile');
       e.isNew = false;
       e.mergeCells = [];
     });
@@ -592,7 +595,7 @@ const move = (direction: "left" | "right" | "up" | "down") => {
   board = board.filter((e) => !e.toBeRemoved);
 
   const lastBoard = JSON.parse(JSON.stringify(sortBoard(direction))).map(
-    (e: any) => [e.id, e.position]
+    (e: any) => [e.id, e.position],
   );
 
   compress(direction);
@@ -608,7 +611,7 @@ const move = (direction: "left" | "right" | "up" | "down") => {
     generateNewTile();
   }
 
-  localStorage.setItem("board", JSON.stringify(board));
+  localStorage.setItem('board', JSON.stringify(board));
 };
 
 const boardElement = initBoard();
@@ -620,51 +623,51 @@ if (!board.length) {
   board.forEach((e) => createNewTile(e, true));
 }
 
-window.addEventListener("load", () => {
+window.addEventListener('load', () => {
   setTimeout(() => {
     // This hides the address bar:
     window.scrollTo(0, 1);
   }, 0);
 });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowDown") {
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown') {
     e.preventDefault();
-    move("down");
+    move('down');
   }
 
-  if (e.key === "ArrowRight") {
+  if (e.key === 'ArrowRight') {
     e.preventDefault();
-    move("right");
+    move('right');
   }
 
-  if (e.key === "ArrowLeft") {
+  if (e.key === 'ArrowLeft') {
     e.preventDefault();
-    move("left");
+    move('left');
   }
 
-  if (e.key === "ArrowUp") {
+  if (e.key === 'ArrowUp') {
     e.preventDefault();
-    move("up");
+    move('up');
   }
 });
 
-document.addEventListener("swiped-left", (e) => {
+document.addEventListener('swiped-left', (e) => {
   e.preventDefault();
-  move("left");
+  move('left');
 });
 
-document.addEventListener("swiped-right", (e) => {
+document.addEventListener('swiped-right', (e) => {
   e.preventDefault();
-  move("right");
+  move('right');
 });
 
-document.addEventListener("swiped-up", (e) => {
+document.addEventListener('swiped-up', (e) => {
   e.preventDefault();
-  move("up");
+  move('up');
 });
 
-document.addEventListener("swiped-down", (e) => {
+document.addEventListener('swiped-down', (e) => {
   e.preventDefault();
-  move("down");
+  move('down');
 });
